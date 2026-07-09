@@ -1,0 +1,31 @@
+FROM debian:stable-slim
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 直接覆盖 sources.list 为阿里云镜像源（避免 sed 匹配失败）
+RUN echo "deb http://mirrors.aliyun.com/debian stable main contrib non-free" > /etc/apt/sources.list && \
+    echo "deb http://mirrors.aliyun.com/debian stable-updates main contrib non-free" >> /etc/apt/sources.list && \
+    echo "deb http://mirrors.aliyun.com/debian-security stable-security main contrib non-free" >> /etc/apt/sources.list
+
+# 安装 STM32 开发必要工具（最小集合）
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+    ninja-build \
+    git \
+    curl \
+    gcc-arm-none-eabi \
+    binutils-arm-none-eabi \
+    gdb-multiarch \
+    stlink-tools \
+    openocd \
+    libusb-1.0-0-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# 验证关键工具
+RUN arm-none-eabi-gcc --version && \
+    openocd --version && \
+    cmake --version
+
+WORKDIR /workspaces

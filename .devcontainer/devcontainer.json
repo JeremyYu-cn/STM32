@@ -1,44 +1,29 @@
 {
   "name": "STM32 Dev Container",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
-
+  "image": "stm32-env-slim:latest",
   "features": {
-    "ghcr.io/devcontainers/features/common-utils:2": {},
-    "ghcr.io/devcontainers/features/cmake:1": {},
-    "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/python:1": {},
-
-    "ghcr.io/devcontainers-contrib/features/arm-gcc:1": {
-      "version": "latest"
-    },
-
-    "ghcr.io/devcontainers-contrib/features/openocd:1": {}
+    "ghcr.io/devcontainers/features/common-utils:2": {}
   },
-
-  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y ninja-build libusb-1.0-0-dev stlink-tools",
-
   "runArgs": [
     "--privileged",
     "--device=/dev/bus/usb:/dev/bus/usb"
   ],
-
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-vscode.cmake-tools",
         "ms-vscode.cpptools",
-        "marus25.cortex-debug"
+        "marus25.cortex-debug",
+        "zixuanwang.linkerscript",
+        "danielpinto8zz6.c-cpp-compile-run"
       ]
     }
   },
-
   "containerEnv": {
     "CMAKE_EXPORT_COMPILE_COMMANDS": "1"
   },
-
   "mounts": [
     "source=/dev/bus/usb,target=/dev/bus/usb,type=bind"
   ],
-
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"
 }
