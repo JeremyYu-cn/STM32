@@ -1,0 +1,85 @@
+{
+  "dependencies": [
+    {
+      "install": {
+        "mode": "full-project",
+        "target": "cpp_libs/projects/FreeRTOS_FreeRTOS-Kernel",
+        "headers": [
+          ".git-blame-ignore-revs",
+          ".gitattributes",
+          ".github",
+          ".gitmodules",
+          "CMakeLists.txt",
+          "GitHub-FreeRTOS-Kernel-Home.url",
+          "History.txt",
+          "LICENSE.md",
+          "MISRA.md",
+          "Quick_Start_Guide.url",
+          "README.md",
+          "croutine.c",
+          "cspell.config.yaml",
+          "event_groups.c",
+          "examples",
+          "include",
+          "list.c",
+          "manifest.yml",
+          "portable",
+          "queue.c",
+          "stream_buffer.c",
+          "tasks.c",
+          "timers.c"
+        ],
+        "paths": [
+          ".git-blame-ignore-revs",
+          ".gitattributes",
+          ".github",
+          ".gitmodules",
+          "CMakeLists.txt",
+          "GitHub-FreeRTOS-Kernel-Home.url",
+          "History.txt",
+          "LICENSE.md",
+          "MISRA.md",
+          "Quick_Start_Guide.url",
+          "README.md",
+          "croutine.c",
+          "cspell.config.yaml",
+          "event_groups.c",
+          "examples",
+          "include",
+          "list.c",
+          "manifest.yml",
+          "portable",
+          "queue.c",
+          "stream_buffer.c",
+          "tasks.c",
+          "timers.c"
+        ]
+      },
+      "name": "FreeRTOS-Kernel",
+      "release": {
+        "tagName": null,
+        "name": null,
+        "publishedAt": null
+      },
+      "repository": {
+        "path": "/FreeRTOS/FreeRTOS-Kernel",
+        "url": "https://github.com/FreeRTOS/FreeRTOS-Kernel"
+      },
+      "source": {
+        "type": "github-repository",
+        "archiveName": "main.zip",
+        "archiveUrl": "https://api.github.com/repos/FreeRTOS/FreeRTOS-Kernel/zipball/main",
+        "integrity": {
+          "sha256": "f8ba4cbb51e9e135aaab9551157018b353ad43a1944f6fb7f14e2060d947e679"
+        },
+        "requested": {
+          "type": "latest-release",
+          "value": null
+        }
+      },
+      "type": "need-compile",
+      "version": "main"
+    }
+  ],
+  "lockfileVersion": 1
+}

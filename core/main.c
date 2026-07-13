@@ -1,6 +1,12 @@
-#define RCC_APB2ENR (*(volatile unsigned int*)0x40021018)
-#define GPIOC_CRH   (*(volatile unsigned int*)0x40011004)
-#define GPIOC_ODR   (*(volatile unsigned int*)0x4001100C)
+#include "freeRTOS/include/FreeRTOS.h"
+#include "freeRTOS/include/task.h"
+#include "stdio.h"
+// #include "lib/uart.h"
+
+static uint32_t Task_Stack_Size = 2 * 1024;
+static TaskHandle_t task1_handle;
+
+void task1_handle_function( void *pvParameters);
 
 void delay(volatile int t)
 {
@@ -11,19 +17,19 @@ void delay(volatile int t)
 
 int main(void)
 {
-    // 1. enable GPIOC clock
-    RCC_APB2ENR |= (1 << 4);
 
-    // 2. config PC13 as output
-    GPIOC_CRH &= ~(0xF << 20);
-    GPIOC_CRH |=  (0x2 << 20);
+    // uart1_init();
 
-    while (1)
-    {
-        GPIOC_ODR &= ~(1 << 13); // LED ON
-        delay(50000);
+    xTaskCreate(task1_handle_function, "Task1", Task_Stack_Size, NULL, 1, &task1_handle);
 
-        GPIOC_ODR |= (1 << 13);  // LED OFF
-        delay(50000);
+    vTaskStartScheduler();
+}
+
+
+void task1_handle_function( void *pvParameters)
+{
+    while(1) {
+        printf("hello\r\n");
+        delay(1000);
     }
 }

@@ -7,7 +7,17 @@ CFLAGS = -mcpu=cortex-m3 -mthumb -O0 -g \
 
 LDFLAGS = -T linker.ld -nostdlib
 
-SRCS = core/main.c startup.s
+SRCS = \
+core/lib/sys.c \
+core/main.c \
+include/freeRTOS/include/timers.c \
+include/freeRTOS/include/tasks.c \
+include/freeRTOS/include/list.c \
+include/freeRTOS/include/queue.c \
+include/freeRTOS/include/port.c \
+include/freeRTOS/include/heap_4.c \
+startup.s
+
 OBJS = $(SRCS:.c=.o)
 OBJS := $(OBJS:.s=.o)
 

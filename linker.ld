@@ -1,4 +1,4 @@
-ENTRY(_start)
+ENTRY(Reset_Handler)
 
 MEMORY
 {
@@ -6,20 +6,33 @@ MEMORY
     RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 20K
 }
 
+
 SECTIONS
 {
+
+    .isr_vector :
+    {
+        KEEP(*(.isr_vector))
+    } > FLASH
+
+
     .text :
     {
         *(.text*)
+        *(.rodata*)
     } > FLASH
+
 
     .data :
     {
         *(.data*)
-    } > RAM
+    } > RAM AT > FLASH
+
 
     .bss :
     {
         *(.bss*)
+        *(COMMON)
     } > RAM
+
 }
