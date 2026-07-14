@@ -14,9 +14,19 @@ int main(void)
 
     uart_puts("main start\r\n");
 
-    xTaskCreate(task1_handle_function, "Task1", Task_Stack_Size, NULL, 1, &task1_handle);
+    BaseType_t res = xTaskCreate(task1_handle_function, "Task1", Task_Stack_Size, NULL, 1, &task1_handle);
+
+    if (res != pdPASS) {
+        uart_log("ERROR", "Task creation failed\r\n");
+    } else {
+        uart_log("INFO", "Starting scheduler\r\n");
+    
+    }
 
     vTaskStartScheduler();
+
+    uart_log("ERROR", "Scheduler failed to start\r\n");
+
 }
 
 
