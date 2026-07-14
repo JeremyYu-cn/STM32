@@ -1,3 +1,4 @@
 firmware.bin
 firmware.elf
+firmware.map
 cpp_libs
