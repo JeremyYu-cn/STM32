@@ -1,31 +1,84 @@
-FROM debian:stable-slim
+FROM --platform=$BUILDPLATFORM debian:13-slim
 
+ARG TARGETARCH
 ENV DEBIAN_FRONTEND=noninteractive
 
-# 直接覆盖 sources.list 为阿里云镜像源（避免 sed 匹配失败）
-RUN echo "deb http://mirrors.aliyun.com/debian stable main contrib non-free" > /etc/apt/sources.list && \
-    echo "deb http://mirrors.aliyun.com/debian stable-updates main contrib non-free" >> /etc/apt/sources.list && \
-    echo "deb http://mirrors.aliyun.com/debian-security stable-security main contrib non-free" >> /etc/apt/sources.list
+# -----------------------------------------------------------------------------
+# 使用阿里源
+# -----------------------------------------------------------------------------
+RUN rm -f /etc/apt/sources.list.d/*.sources && \
+    printf '%s\n' \
+    "Types: deb" \
+    "URIs: http://mirrors.aliyun.com/debian" \
+    "Suites: trixie trixie-updates" \
+    "Components: main contrib non-free non-free-firmware" \
+    "Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg" \
+    > /etc/apt/sources.list.d/debian.sources && \
+    printf '%s\n' \
+    "" \
+    "Types: deb" \
+    "URIs: http://mirrors.aliyun.com/debian-security" \
+    "Suites: trixie-security" \
+    "Components: main contrib non-free non-free-firmware" \
+    "Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg" \
+    >> /etc/apt/sources.list.d/debian.sources
 
-# 安装 STM32 开发必要工具（最小集合）
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# -----------------------------------------------------------------------------
+# 基础工具
+# -----------------------------------------------------------------------------
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     build-essential \
+    make \
     cmake \
     ninja-build \
     git \
     curl \
-    gcc-arm-none-eabi \
-    binutils-arm-none-eabi \
+    wget \
+    unzip \
+    xz-utils \
+    python3 \
+    python3-pip \
+    python3-venv \
+    pkg-config \
+    ca-certificates \
     gdb-multiarch \
-    stlink-tools \
     openocd \
+    stlink-tools \
     libusb-1.0-0-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    usbutils \
+    file && \
+    rm -rf /var/lib/apt/lists/*
 
-# 验证关键工具
+# -----------------------------------------------------------------------------
+# 拷贝 ARM Toolchain
+# -----------------------------------------------------------------------------
+COPY toolchains/ ./tmp/toolchains/
+
+ARG GCC_VERSION=14.3.rel1
+
+RUN if [ "$TARGETARCH" = "amd64" ]; then \
+    FILE=arm-gnu-toolchain-${GCC_VERSION}-x86_64-arm-none-eabi.tar.xz; \
+    elif [ "$TARGETARCH" = "arm64" ]; then \
+    FILE=arm-gnu-toolchain-${GCC_VERSION}-aarch64-arm-none-eabi.tar.xz; \
+    else \
+    echo "Unsupported architecture: $TARGETARCH"; \
+    exit 1; \
+    fi && \
+    mkdir -p /opt && \
+    tar -xf /tmp/toolchains/${FILE} -C /opt && \
+    TOOLCHAIN_DIR=$(find /opt -maxdepth 1 -type d -name "arm-gnu-toolchain-*") && \
+    ln -s "$TOOLCHAIN_DIR" /opt/arm-gcc && \
+    rm -rf /tmp/toolchains
+
+ENV PATH="/opt/arm-gcc/bin:${PATH}"
+
+# -----------------------------------------------------------------------------
+# 验证
+# -----------------------------------------------------------------------------
 RUN arm-none-eabi-gcc --version && \
-    openocd --version && \
-    cmake --version
+    arm-none-eabi-gcc -print-sysroot
 
 WORKDIR /workspaces
+
+CMD ["/bin/bash"]

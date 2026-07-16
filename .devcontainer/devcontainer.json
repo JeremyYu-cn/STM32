@@ -1,6 +1,6 @@
 {
   "name": "STM32 Dev Container",
-  "image": "stm32-env-slim:latest",
+  "image": "stm32-dev:latest",
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {}
   },
