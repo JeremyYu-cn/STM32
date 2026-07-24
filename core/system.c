@@ -1,4 +1,6 @@
 #include <stdint.h>
+#include "lib/base/flash.h"
+#include "lib/base/rcc.h"
 
 #define RCC_BASE 0x40021000
 
@@ -14,16 +16,21 @@ void SystemInit(void)
     /*
      * HSE ON
      */
+    struct rcc_enable_peripheral_config rcc_cr_cfg = {
+        .rcc_base = RCC_CR,
+        .peripheral = RCC_CR
+    };
     RCC_CR |= (1 << 16);
 
-    while (!(RCC_CR & (1 << 17)))
-        ;
+    while (!(RCC_CR & (1 << 17)));
 
     /*
-     * FLASH 2WS
+     * FLASH INIT
      */
-    FLASH_ACR &= ~0x7;
-    FLASH_ACR |= 0x2;
+    struct flash_init_config flash_cfg = {
+        .flash_latency = FLASH_LATENCY_2WS
+    };
+    flash_init(&flash_cfg);
 
     /*
      * AHB = SYSCLK
@@ -52,8 +59,7 @@ void SystemInit(void)
      */
     RCC_CR |= (1 << 24);
 
-    while (!(RCC_CR & (1 << 25)))
-        ;
+    while (!(RCC_CR & (1 << 25)));
 
     /*
      * switch SYSCLK PLL
@@ -61,6 +67,5 @@ void SystemInit(void)
     RCC_CFGR &= ~(3 << 0);
     RCC_CFGR |= (2 << 0);
 
-    while ((RCC_CFGR & (3 << 2)) != (2 << 2))
-        ;
+    while ((RCC_CFGR & (3 << 2)) != (2 << 2));
 }

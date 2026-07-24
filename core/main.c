@@ -27,7 +27,7 @@ int main(void)
     uart_puts("GPIOC clock enabled\r\n");
 
     struct gpio_config led_config = {
-        .gpio_base = GPIOC_BASE,
+        .gpio_base = GPIOC_ADDR,
         .pin = GPIO_PIN_13,
         .mode = GPIO_MODE_OUTPUT_2MHZ
     };
@@ -60,6 +60,6 @@ void task1_handle_function(void *pvParameters)
         uart_log("INFO", "Task1 is running\r\n");
         // gpio_set_pin(GPIOC_BASE, GPIO_PIN_13, GPIO_BIT_HIGH);
         vTaskDelay(pdMS_TO_TICKS(1000));
-        gpio_set_pin(GPIOC_BASE, GPIO_PIN_13, GPIO_BIT_LOW);
+        gpio_set_pin(GPIOC_ADDR, GPIO_PIN_13, GPIO_BIT_LOW);
     }
 }

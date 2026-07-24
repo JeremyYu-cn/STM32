@@ -9,14 +9,14 @@
 #define GPIO_BIT_MODE uint32_t
 
 // GPIO Base Addresses
-#define GPIOA_BASE 0x40010800
-#define GPIOB_BASE 0x40010C00
-#define GPIOC_BASE 0x40011000
-#define GPIOD_BASE 0x40011400
-#define GPIOE_BASE 0x40011800
-#define GPIOF_BASE 0x40011C00
-#define GPIOG_BASE 0x40012000
-#define AFIO_BASE 0x40010000
+#define GPIOA_ADDR 0x40010800
+#define GPIOB_ADDR 0x40010C00
+#define GPIOC_ADDR 0x40011000
+#define GPIOD_ADDR 0x40011400
+#define GPIOE_ADDR 0x40011800
+#define GPIOF_ADDR 0x40011C00
+#define GPIOG_ADDR 0x40012000
+#define AFIO_ADDR 0x40010000
 
 // GPIO CFG Register Offsets
 #define GPIO_CFG_CRL(gpio_base) (*(volatile uint32_t *)((gpio_base) + 0x00)) // Configuration register base address
@@ -40,7 +40,7 @@
 #define GPIO_PIN_10 10
 #define GPIO_PIN_11 11
 #define GPIO_PIN_12 12
-#define GPIO_PIN_13 13
+#define GPIO_PIN_13 13              
 #define GPIO_PIN_14 14
 #define GPIO_PIN_15 15
 
