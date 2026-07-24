@@ -10,6 +10,8 @@ LDFLAGS = -T linker.ld -Wl,-Map=firmware.map -nostdlib
 SRCS = \
 core/lib/sys.c \
 core/lib/uart.c \
+core/lib/base/rcc.c \
+core/lib/base/gpio.c \
 core/system.c \
 core/main.c \
 include/freeRTOS/include/timers.c \

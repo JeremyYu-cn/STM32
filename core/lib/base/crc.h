@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdint.h>
 
 #define CRC_BASE 0x40023000UL
